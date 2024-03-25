@@ -36,7 +36,7 @@ export default function BookListItem({ book }: IProps) {
             <p>{book.total_words} Words</p>
             <p className="hover:text-orange-900"><a href={book.source_url} target="_blank">Online Book</a></p>
             <Link href={`/book/${book.id}`}>
-                <button className="border border-black rounded-md px-2 py-1 hover:bg-orange-900 hover:text-white w-full mb:w-auto">
+                <button className="border border-black rounded-md px-2 py-1 hover:bg-orange-900 hover:text-white w-full lg:w-auto md:w-auto">
                     Read
                 </button>
             </Link>

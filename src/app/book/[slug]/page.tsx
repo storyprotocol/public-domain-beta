@@ -14,6 +14,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     const [book, setBook] = useState<Book | null>(null);
     const [currentChapter, setCurrentChapter] = useState(0);
     const [characters, setCharacters] = useState<Character[]>([]);
+    const [open, setOpen] = useState(false);
     const fetchBookChapters = async () => {
         try {
             const { data } = await fetch('http://localhost:3000/book/api/fetchChaptersByBookId?id=' + params.slug).then(res => res.json());
@@ -53,18 +54,23 @@ export default function Page({ params }: { params: { slug: string } }) {
         setCurrentChapter(index)
     }
 
-    return <main className="mt-10 max-w-screen-xl m-auto relative h-full">
-        <button
-            className="m-4 flex justify-center items-center"
-            onClick={goBack}
-        >
-            <div className="border border-black rounded-full w-10 h-10 mr-2 flex justify-center items-center">
-                <ChevronLeftIcon />
-            </div>
-            Back
-        </button>
-        <section className="relative flex justify-center items-center h-[300px] px-4" >
-            <img className="h-full w-[220px]" src={book?.img_url} alt={book?.title} />
+    return <div className="relative h-full">
+        <section className="flex justify-between">
+            <button
+                className="m-4 flex justify-center items-center"
+                onClick={goBack}
+            >
+                <div className="border border-black rounded-full w-10 h-10 mr-2 flex justify-center items-center">
+                    <ChevronLeftIcon />
+                </div>
+                Back
+            </button>
+            <button
+                className="mr-4"
+                onClick={() => setOpen(!open)}>Chapters</button>
+        </section>
+        <section className="relative flex justify-center items-center sm:px-4 md:h-auto flex-col md:items-start md:flex-row md:mb-4">
+            <img className="h-full w-[220px] mb-4 md:mb-0" src={book?.img_url} alt={book?.title} />
             <div className="h-full px-5 w-full overflow-auto">
                 <h1 className="text-3xl">{book?.title}</h1>
                 <p>By {book?.authors}</p>
@@ -89,11 +95,18 @@ export default function Page({ params }: { params: { slug: string } }) {
 
             </div>
         </section>
-        <section className="flex px-4 mt-4 h-full">
-            <div className="w-1/5 shrink-0 mr-2">
+        <section className="md:flex px-4 mt-4 h-full block">
+            <div
+                className="fixed h-screen top-0 left-0 bg-black z-10 overflow-auto text-white px-2 transition-all w-full  md:w-2/5 "
+                style={{
+                    transform: open ? 'translateX(0)' : 'translateX(calc(-100% - 1px))'
+                }}
+            >
+
                 {
                     chapters.length ? <>
                         <h3 className="font-bold text-2xl mb-2">Chapters</h3>
+                        <button onClick={() => setOpen(false)} className="absolute top-4 right-4">Close</button>
                         <ul>
                             {
                                 chapters.map((chapter, index) => <li
@@ -117,7 +130,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             </div>
             {
                 characters.length ? (
-                    <div className="ml-4 w-1/5 shrink-0 text-pretty break-words">
+                    <div className="ml-4 md:w-1/5 shrink-0 text-pretty break-words">
                         <div className="border border-black p-2">
                             <h3 className="font-bold text-2xl">Characters</h3>
                             <ul>{
@@ -130,5 +143,5 @@ export default function Page({ params }: { params: { slug: string } }) {
                 ) : null
             }
         </section>
-    </main>
+    </div>
 }
