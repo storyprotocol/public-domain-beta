@@ -18,14 +18,14 @@ export default function () {
         fetchBooks();
     }, []);
 
-    return <main className="h-full w-full mt-10 max-w-screen-xl m-auto">
-        <h1 className="text-5xl mb-4">Public Domain IPs</h1>
+    return <>
+        <h1 className="text-5xl mb-4 mx-4">Public Domain IPs</h1>
         {
-            books.length ? <ul>
+            books.length ? <ul className="grid grid-cols-1 gap-1 xl:grid-cols-2">
                 {
                     books.map((b) => <BookListItem book={b} key={b.id} />)
                 }
             </ul> : null
         }
-    </main>
+    </>
 }
