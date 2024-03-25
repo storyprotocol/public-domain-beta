@@ -1,6 +1,4 @@
-import { open } from 'sqlite'
-import { verbose } from "sqlite3";
-const sqlite3 = verbose();
+import { connectDB } from "../utils";
 
 export interface Character {
     id: string,
@@ -8,21 +6,6 @@ export interface Character {
     name: string,
     nft_ip_id: string,
     image_url: string
-}
-
-async function connectDB() {
-    let DB = null;
-    try {
-        DB = await open({
-            filename: 'src/db/public_10book.db',
-            driver: sqlite3.Database
-        });
-        console.log('DB connection is ready');
-    }
-    catch (err) {
-        console.log(err)
-    }
-    return DB;
 }
 
 export async function GET(request: Request) {
