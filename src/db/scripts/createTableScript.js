@@ -24,7 +24,7 @@ create table if not exists ${DB_TABLE_NAME.CHAPTER}
     (
         id varchar PRIMARY KEY,
         belongs_to varchar,
-        chapter_num intager,
+        chapter_num integer,
         chapter_name varchar,
         content varchar,
         nft_ip_id varchar,

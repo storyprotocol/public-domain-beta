@@ -1,4 +1,4 @@
-import { connectDB, connectPostgres } from "../utils";
+import { connectPostgres } from "../utils";
 export interface Book {
     id: string,
     title: string,
@@ -20,7 +20,7 @@ export async function GET() {
     const db = await connectPostgres();
     if (db) {
         try {
-            const { rows } = await db?.query<Book>({
+            const { rows } = await db.query<Book>({
                 text: 'select * from book'
             });
             db.end();

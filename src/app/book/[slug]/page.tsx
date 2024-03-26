@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     const [open, setOpen] = useState(false);
     const fetchBookChapters = async () => {
         try {
-            const { data } = await fetch('http://localhost:3000/book/api/fetchChaptersByBookId?id=' + params.slug).then(res => res.json());
+            const { data } = await fetch('/book/api/fetchChaptersByBookId?id=' + params.slug).then(res => res.json());
             setChapters(data);
         } catch (err) {
             console.log(err);
@@ -25,7 +25,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
     const fetchBook = async () => {
         try {
-            const { data } = await fetch('http://localhost:3000/book/api/fetchBook?id=' + params.slug).then(res => res.json());
+            const { data } = await fetch('/book/api/fetchBook?id=' + params.slug).then(res => res.json());
             setBook(data);
         } catch (err) {
             console.log(err);
@@ -33,7 +33,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
     const fetchCharacters = async () => {
         try {
-            const { data } = await fetch('http://localhost:3000/book/api/fetchCharactersByBookId?id=' + params.slug).then(res => res.json());
+            const { data } = await fetch('/book/api/fetchCharactersByBookId?id=' + params.slug).then(res => res.json());
             setCharacters(data);
         } catch (err) {
             console.log(err);
