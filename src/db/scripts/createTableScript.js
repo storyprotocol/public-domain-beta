@@ -14,7 +14,8 @@ create table if not exists ${DB_TABLE_NAME.BOOK}
         total_words integer,
         source_url varchar,
         nft_ip_id varchar,
-        genre varchar
+        genre varchar,
+        img_url varchar
     )
 `;
 
