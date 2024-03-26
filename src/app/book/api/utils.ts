@@ -1,17 +1,13 @@
-import { open } from 'sqlite'
-import { verbose } from "sqlite3";
-export async function connectDB() {
-    const sqlite3 = verbose();
-    let DB = null;
+import { createPool } from '@vercel/postgres';
+
+export async function connectPostgres() {
+    const db = createPool({
+        connectionString: `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
+    });
     try {
-        DB = await open({
-            filename: 'src/db/public_10book.db',
-            driver: sqlite3.Database
-        });
-        console.log('DB connection is ready');
+        await db.connect();
+        return db;
+    } catch (error) {
+        console.error('Error executing query', error);
     }
-    catch (err) {
-        console.log(err)
-    }
-    return DB;
 }

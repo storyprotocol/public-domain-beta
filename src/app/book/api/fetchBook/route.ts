@@ -1,4 +1,4 @@
-import { connectDB } from "../utils";
+import { connectPostgres } from "../utils";
 
 export interface Book {
     id: string,
@@ -16,17 +16,20 @@ export interface Book {
 }
 
 export async function GET(request: Request) {
-    const db = await connectDB();
+    const db = await connectPostgres();
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id');
     if (db) {
         try {
-            const result = await db?.get(`select * from book where id = "${id}"`, []);
-            db.close();
-            return Response.json({ data: result });
+            const { rows } = await db.query<Book>({
+                text: 'select * from book where id = $1',
+                values: [id]
+            });
+            db.end();
+            return Response.json({ data: rows[0] });
         } catch (err) {
             return Response.json({ data: err })
         }
     }
-    return Response.json({ data: [] })
+    return Response.json({ data: null })
 }

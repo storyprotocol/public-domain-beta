@@ -1,4 +1,4 @@
-import { connectDB } from "../utils";
+import { connectPostgres } from "../utils";
 export interface Book {
     id: string,
     title: string,
@@ -17,12 +17,14 @@ export interface Book {
 
 
 export async function GET() {
-    const db = await connectDB();
+    const db = await connectPostgres();
     if (db) {
         try {
-            const result: Book[] = await db?.all('select * from book', []);
-            db.close();
-            return Response.json({ data: result });
+            const { rows } = await db.query<Book>({
+                text: 'select * from book'
+            });
+            db.end();
+            return Response.json({ data: rows });
         } catch (err) {
             return Response.json({ data: err })
         }
