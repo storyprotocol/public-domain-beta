@@ -8,7 +8,7 @@ export default function () {
     const [books, setBooks] = useState<Book[]>([]);
     const fetchBooks = async () => {
         try {
-            const { data } = await fetch('http://localhost:3000/book/api/fetchBooks').then(res => res.json());
+            const { data } = await fetch('/book/api/fetchBooks').then(res => res.json());
             setBooks(data);
         } catch (err) {
             console.log(err);
