@@ -5,9 +5,10 @@ import { Chapter } from "@/app/book/api/fetchChaptersByBookId/route";
 import CubeIcon from "@/app/icon/cube";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import ChevronLeftIcon from "@/app/icon/chevronLeft";
+import Loading from "@/app/components/Loading";
 import { Character } from "../api/fetchCharactersByBookId/route";
 import CharacterItem from "../components/characterItem";
-import ChevronLeftIcon from "@/app/icon/chevronLeft";
 
 export default function Page({ params }: { params: { slug: string } }) {
     const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -15,6 +16,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     const [currentChapter, setCurrentChapter] = useState(0);
     const [characters, setCharacters] = useState<Character[]>([]);
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const fetchBookChapters = async () => {
         try {
             const { data } = await fetch('/book/api/fetchChaptersByBookId?id=' + params.slug).then(res => res.json());
@@ -39,22 +41,35 @@ export default function Page({ params }: { params: { slug: string } }) {
             console.log(err);
         }
     }
+
+    const fetchData = async () => {
+        try {
+            await Promise.allSettled([
+                fetchBookChapters(),
+                fetchBook(),
+                fetchCharacters()
+            ]);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const router = useRouter();
 
     const goBack = () => {
         router.back();
     };
     useEffect(() => {
-        fetchBookChapters();
-        fetchBook();
-        fetchCharacters();
+        fetchData()
     }, []);
 
     const handleSetChapter = (index: number) => {
         setCurrentChapter(index)
     }
 
-    return <div className="relative h-full">
+    return loading ? <Loading /> : <div className="relative h-full">
         <section className="flex justify-between">
             <button
                 className="m-4 flex justify-center items-center"
