@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
+.DS_Store
+*.pem
